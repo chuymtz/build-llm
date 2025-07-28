@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
+
+# Data, logs, outputs
+*.log
+*.out
+*.csv
+*.tsv
+*.dat
+*.db
+*.sqlite
+*.h5
+*.pth
+*.pt
+
+# Environment files
+.env
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Matplotlib cache
+.matplotlib/
+
+# PyTorch Lightning logs
+lightning_logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+#
