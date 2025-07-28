@@ -1,6 +1,12 @@
  # build-llm
  
  This repository contains a simple implementation of core components for a GPT-style language model using PyTorch. It is designed for educational and experimental purposes, allowing you to explore transformer blocks, attention mechanisms, and feedforward layers.
+
+## Inspiration
+
+This project follows the book **"Build a Large Language Model (From Scratch)"** by Sebastian Raschka. For more details, see his book and [YouTube channel](https://www.youtube.com/@SebastianRaschka).
+
+Sebastian Raschka provides excellent resources for understanding and building large language models step by step.
  
  ## Features
  
