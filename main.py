@@ -105,7 +105,6 @@ class CausalAttention(nn.Module):
         context_vec = attn_weights @ values
         return context_vec
         
-
 class MultiHeadAttention(nn.Module):
     def __init__(self, d_in, d_out, context_length, dropout, num_heads, qkv_bias=False):
         super().__init__()
@@ -122,10 +121,36 @@ class TransformerBlock(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg
+        self.attn = MultiHeadAttention(
+            d_in=self.cfg['emb_dim'],
+            d_out=self.cfg['emb_dim'],
+            context_length=self.cfg['context_length'],
+            dropout=self.cfg['drop_rate'],
+            num_heads=self.cfg['n_heads'],
+            dropout=self.cfg['drop_rate'],
+            qkv_bias=self.cfg['qkv_bias']
+        )
+        self.ff = FeedForward(self.cfg)
+        self.norm1 = LayerNorm(self.cfg['emb_dim'])
+        self.norm2 = LayerNorm(self.cfg['emb_dim'])
+        self.drop_shortcut = nn.Dropout(self.cfg['drop_rate'])
+        
+    def forward(self, x):
+        shortcut = x
+        x = self.norm1(x)
+        x = self.attn(x)
+        x = self.drop_shortcut(x) 
+        x = x + shortcut
+        
+        shortcut = x
+        x = self.norm2(x)
+        x = self.ff(x)
+        x = self.drop_shortcut(x)
+        x = x + shortcut
+        
+        return x
 
-
-
-class DummyGPTModel(nn.Module):
+class GPTModel(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg
@@ -151,8 +176,11 @@ class DummyGPTModel(nn.Module):
             torch.Tensor: Output tensor of shape (batch_size, seq_len, vocab_size).
         """
         return x
+
+
+torch.manual_seed(123)
         
-gptmodel = self = DummyGPTModel(GPT_CONFIG_124M)
+gptmodel = self = GPTModel(GPT_CONFIG_124M)
 
 
 dummy_input = torch.tensor([[1, 5, 2], [4, 3, 0]])  # shape: (batch_size=2, seq_len=3)
