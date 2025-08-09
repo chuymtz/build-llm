@@ -222,43 +222,28 @@ class GPTModel(nn.Module):
         logits = self.out_head(x)
         return logits
 
-torch.manual_seed(123)
-model = self = GPTModel(cfg=GPT_CONFIG_124M)
+if __name__ == "__main__":
+    torch.manual_seed(123)
+    model = GPTModel(cfg=GPT_CONFIG_124M)
 
-batch = []
-txt1 = "Every effort moves you"
-txt2 = "Every day holds a"
-batch.append(torch.tensor(tokenizer.encode(txt1)))
-batch.append(torch.tensor(tokenizer.encode(txt2)))
-batch = torch.stack(batch, dim=0)
-print(batch.shape)
+    batch = []
+    txt1 = "Every effort moves you"
+    txt2 = "Every day holds a"
+    batch.append(torch.tensor(tokenizer.encode(txt1)))
+    batch.append(torch.tensor(tokenizer.encode(txt2)))
+    batch = torch.stack(batch, dim=0)
+    print(batch.shape)
 
-out = model(batch)
+    out = model(batch)
 
-print("Input batch:\n", batch)
-print("\nOutput shape:", out.shape)
-print(out)
+    print("Input batch:\n", batch)
+    print("\nOutput shape:", out.shape)
+    print(out)
 
-
-dummy_input = torch.tensor([[1, 5, 2], [4, 3, 0]])  # shape: (batch_size=2, seq_len=3)
-self.tok_emb(dummy_input).shape
-
-gelu, relu = GELU(), nn.ReLU()
-x = torch.linspace(-3, 3, 100)
-y_gelu, y_relu = gelu(x), relu(x)
-plt.figure(figsize=(8, 3))
-for i, (y, label) in enumerate(zip([y_gelu, y_relu], ["GELU", "ReLU"]), 1):
-    plt.subplot(1, 2, i)
-    plt.plot(x, y)
-    plt.title(f"{label} activation function")
-    plt.xlabel("x")
-    plt.ylabel(f"{label}(x)")
-    plt.grid(True)
-plt.tight_layout()
-plt.show()
+    total_params = sum(p.numel() for p in model.parameters())
+    model.tok_emb.weight.shape
+    model.out_head.weight.shape
 
 
-ffn = FeedForward(GPT_CONFIG_124M)
-x = torch.rand(2, 3, 768)
-out = ffn(x)
-print(out.shape)
+    sum(p.numel() for p in model.out_head.parameters())
+    total_params - sum(p.numel() for p in model.out_head.parameters())
