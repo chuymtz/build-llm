@@ -2,10 +2,10 @@ import torch
 import json
 from pprint import pprint
 
-def load_config(config_path):
+def load_config(config_path, echo: bool = False):
     with open(config_path, "r") as f:
         GPT_CONFIG_124M = json.load(f)
-        pprint(GPT_CONFIG_124M)
+        if echo: pprint(GPT_CONFIG_124M)
     return GPT_CONFIG_124M
 
 def generate_text_simple(model, idx, max_new_tokens, context_size):
@@ -28,3 +28,11 @@ def generate_text_simple(model, idx, max_new_tokens, context_size):
               ), dim=1)
     return idx
 
+def text_to_token_ids(text, tokenizer):
+    encoded = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
+    encoded_tensor = torch.tensor(encoded).unsqueeze(0)
+    return encoded_tensor
+
+def token_ids_to_text(token_ids, tokenizer):
+    flat = token_ids.squeeze(0)
+    return tokenizer.decode(flat.tolist())
