@@ -9,7 +9,7 @@ cfg = load_config("config.json")
 
 model = GPTModel(cfg)   
 
-start_context = ["Every effort moves you", "I really like"]
+start_context = "Every effort moves you"
 
 token_ids = generate_text_simple(
  model=model,
@@ -24,8 +24,18 @@ with open("data/the-verdict.txt", "r", encoding="utf-8") as file:
 
 total_characters = len(text_data)
 
-total_token = len(tokenizer.encode(text_data))
-total_token
+total_tokens = len(tokenizer.encode(text_data))
+total_tokens
+
+
+# |> DATA PREP ----------------------------------------------------------//
+
+train_ratio = .9
+split_idx = int(train_ratio * len(text_data))
+train_data = text_data[:split_idx]
+val_data = text_data[split_idx:]
+
+
 
 
 # |> LOSS ----------------------------------------------------------//
